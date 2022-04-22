@@ -1,10 +1,16 @@
 import Pages from "./COMPONENTS/PAGES/Pages";
+import Category from "./COMPONENTS/Category";
+import React from "react";
+import {BrowserRouter} from "react-router-dom";
 
 function App() {
     return (
         <div className='App'>
-            <h1>hello</h1>
-            <Pages/>
+            <BrowserRouter>
+                <Category/>
+                <Pages/>
+            </BrowserRouter>
+
         </div>
     );
 }
