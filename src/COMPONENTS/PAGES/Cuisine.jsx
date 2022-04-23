@@ -21,20 +21,29 @@ const Cuisine = () => {
         debugger
     }, [params.type])
 
-    return <Grid>
+    return <Grid
+        animate={{opacity: 1}}
+        initial={{opacity: 0}}
+        exit={{opacity: 0}}
+        transition={{duration: 0.5}}
+    >
         {cuisine.map((item) => {
             return (
-                <Card key={item.id}>
-                    <img src={item.image} alt=""/>
-                    <h4>{item.title}</h4>
-                </Card>
+                <Link
+                    style={{textDecoration:'none'}}
+                    to={'/recipe/' + item.id}>
+                    <Card key={item.id}>
+                        <img src={item.image} alt=""/>
+                        <h4>{item.title}</h4>
+                    </Card>
+                </Link>
             )
         })}
     </Grid>
 
 };
 
-const Grid = styled.div`
+const Grid = styled(motion.div)`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
   grid-gap: 3rem;

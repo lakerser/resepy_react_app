@@ -2,6 +2,7 @@ import React from 'react';
 import {Splide, SplideSlide} from "@splidejs/react-splide";
 import styled from "styled-components";
 import {useEffect, useState} from "react";
+import {Link} from "react-router-dom";
 
 
 const Veggie = () => {
@@ -43,9 +44,13 @@ const Veggie = () => {
 
                         <SplideSlide key={recipe.id}>
                             <Card>
-                                <p>{recipe.title}</p>
-                                <img src={recipe.image} alt="image"/>
-                                <Gradient/>
+                                <Link
+                                    style={{textDecoration:'none'}}
+                                    to={'/recipe/'+recipe.id}>
+                                    <p>{recipe.title}</p>
+                                    <img src={recipe.image} alt="image"/>
+                                    <Gradient/>
+                                </Link>
                             </Card>
                         </SplideSlide>
                     )
