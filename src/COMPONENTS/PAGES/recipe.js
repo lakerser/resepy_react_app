@@ -1,79 +1,111 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import styled from "styled-components";
-import loading from'../../asets/img/giphy.gif'
+import loading from '../../asets/img/giphy.gif'
+import {motion} from "framer-motion";
+
+
 const Recipe = () => {
 
     let params = useParams()
     const [details, setDetails] = useState({})
     const [activeTab, setActiveTab] = useState('instructions')
-    const fetchDetails = async () => {
-        const data = await fetch(`https://api.spoonacular.com/recipes/${params.name}/information?apiKey=${process.env.REACT_APP_API_KEY}`)
-        const detailData = await data.json()
-        setDetails(detailData)
-        console.log(detailData)
+    const localeFetchDetails = async (name) => {
+        const check = localStorage.getItem(name)
+        if (check) {
+            let func = () => {
+                setDetails(JSON.parse(check))
+            }
+            setTimeout(func, 2000)
+        } else {
+            const data = await fetch(`https://api.spoonacular.com/recipes/${name}/information?apiKey=${process.env.REACT_APP_API_KEY}`)
+            const detailData = await data.json()
+            localStorage.setItem(name, JSON.stringify(detailData))
+            setDetails(detailData)
+        }
     }
     useEffect(() => {
-        fetchDetails()
+        localeFetchDetails(params.name)
     }, [params.name])
     console.log(details)
     return (
-        <DetailWrapper>
+        <div>
+            {details.image
+                ?
+                <DetailWrapper
+                    animate={{opacity: 1}}
+                    initial={{opacity: 0}}
+                    exit={{opacity: 0}}
+                    transition={{duration: 0.5}}
+                >
 
-            <div>
-                <h2>{details.title}</h2>
-                {
-                    details.image?<img src={details.image} alt=""/>:<img src={loading} alt=""/>
-                }
+                    <div className={'imageRes'}>
+                        <h2>{details.title}</h2>
 
-            </div>
+                        <img src={details.image} alt=""/>
 
-            <Info>
-                <Button className={activeTab === 'instructions' ? 'active' : ""} onClick={() => {
-                    setActiveTab(`instructions`)
-                }}>Instructions</Button>
-                <Button className={activeTab === 'ingredients' ? 'active' : ""} onClick={() => {
-                    setActiveTab(`ingredients`)
-                }}>Ingredients</Button>
-                {activeTab === 'instructions'
-                    ? <div className={'text'}>
-                        <h2>About recipe</h2>
-                        <h3 dangerouslySetInnerHTML={{__html: details.summary}}></h3>
-                        <h2>How to make</h2>
-                        <h3 dangerouslySetInnerHTML={{__html: details.instructions}}></h3>
 
                     </div>
-                    : <div className='ingredients'>
-                        <h2>Ingredients</h2>
-                        <ul>
-                            {details.extendedIngredients.map(ingredient => {
-                                return (
-                                    <li key={ingredient.id}>
-                                        {ingredient.original}
-                                    </li>
-                                )
-                            })}
-                        </ul>
-                    </div>
-                }
-            </Info>
+
+                    <Info>
+                        <Button className={activeTab === 'instructions' ? 'active' : ""} onClick={() => {
+                            setActiveTab(`instructions`)
+                        }}>Instructions</Button>
+                        <Button className={activeTab === 'ingredients' ? 'active' : ""} onClick={() => {
+                            setActiveTab(`ingredients`)
+                        }}>Ingredients</Button>
+                        {activeTab === 'instructions'
+                            ? <div className={'text'}>
+                                <h2>About recipe</h2>
+                                <h3 dangerouslySetInnerHTML={{__html: details.summary}}></h3>
+                                <h2>How to make</h2>
+                                <h3 dangerouslySetInnerHTML={{__html: details.instructions}}></h3>
+
+                            </div>
+                            : <div className='ingredients'>
+                                <h2>Ingredients</h2>
+                                <ul>
+                                    {details.extendedIngredients.map(ingredient => {
+                                        return (
+                                            <li key={ingredient.id}>
+                                                {ingredient.original}
+                                            </li>
+                                        )
+                                    })}
+                                </ul>
+                            </div>
+                        }
+                    </Info>
 
 
-        </DetailWrapper>
+                </DetailWrapper>
+                :
+                <Loader src={loading} alt=""/>
+            }
+        </div>
     );
 };
-const DetailWrapper = styled.div`
+const DetailWrapper = styled(motion.div)`
+  .imageRes {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    
+  }
+
   margin-top: 10rem;
   margin-bottom: 5rem;
   display: flex;
-  @media (max-width: 768px) {
+  @media (max-width: 1300px) {
     margin-top: 2rem;
     flex-wrap: wrap;
-    img {
-      width: 100%;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
+   .imageRes{
+     img{
+       width: 100%;
+       
+     }
+   }
   }
 
   .active {
@@ -95,7 +127,11 @@ const DetailWrapper = styled.div`
     margin-bottom: 2rem;
   }
 `
-
+const Loader = styled.img`
+  transition: 1s;
+  display: block;
+  margin: 0 auto;
+`
 const Button = styled.button`
   padding: 1rem 2rem;
   color: #313131;
@@ -103,25 +139,26 @@ const Button = styled.button`
   border: 2px solid black;
   font-weight: 600;
   min-width: 100px;
+  margin-bottom: 10px;
 
 
 `
 const Info = styled.div`
-  margin-left: 10rem;
+  margin-left: 5rem;
+  
   @media (max-width: 768px) {
-    .ingredients{
+    .ingredients {
       margin-top: 2rem;
     }
+
     margin-left: 0;
     display: flex;
     flex-direction: column;
     .text {
       margin-top: 2rem;
-
       h3 {
         font-size: 16px;
         line-height: 22px;
-
       }
     }
 

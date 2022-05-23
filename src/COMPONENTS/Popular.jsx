@@ -32,11 +32,17 @@ const Popular = () => {
         <Wrapper>
             <h3>Popular Picks</h3>
             <Splide options={{
-                perPage: 2,
+                perPage: 4,
                 drag: 'free',
-                arrows: false,
+                arrows: true,
                 gap: "2rem",
-                pagination: false
+                pagination: true,
+                breakpoints: {
+                    640: {
+                        perPage: 1,
+                    },
+                }
+
             }}>
                 {popular.map((recipe) => {
                     return (

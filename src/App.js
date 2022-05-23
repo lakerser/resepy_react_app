@@ -8,10 +8,10 @@ import {GiKnifeFork} from "react-icons/gi";
 
 function App() {
     return (
-        <div className='App'>
+        <MyApp className='App'>
             <BrowserRouter>
                 <Nav>
-                    <Logo to={'/'}>  Delicious
+                    <Logo to={'/'}> Delicious
                         <GiKnifeFork/>
                     </Logo>
                 </Nav>
@@ -19,24 +19,32 @@ function App() {
                 <Category/>
                 <Pages/>
             </BrowserRouter>
-
-        </div>
+            <footer>
+    glory to Ukraine
+            </footer>
+        </MyApp>
     );
 }
+
 const Logo = styled(Link)`
-    text-decoration: none;
+  text-decoration: none;
   font-size: 1.5rem;
   font-weight: 400;
   font-family: 'Lobster Two', cursive;
-  
+
+`
+const MyApp = styled.div`
+  display: flex;
+  flex-direction: column;
 `
 
 const Nav = styled.div`
-padding: 4rem 0;
+  padding: 4rem 0;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  svg{
+
+  svg {
     font-size: 2rem;
   }
 `

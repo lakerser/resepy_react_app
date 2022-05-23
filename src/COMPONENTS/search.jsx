@@ -38,7 +38,6 @@ const FormStyle = styled.form`
     max-width: 40%;
     margin: 0 auto;
     width: 100%;
-    
   }
  
   input {

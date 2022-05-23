@@ -4,7 +4,7 @@ import styled from "styled-components";
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-
+import { Grid } from '@splidejs/splide-extension-grid';
 
 const Veggie = () => {
 
@@ -33,18 +33,25 @@ const Veggie = () => {
     return (
         <Wrapper>
             <h3>Our Vegetarian Picks</h3>
-            <Splide options={{
-                perPage: 2,
+            <Splide  options={{
+
+
+                perPage: 3,
                 drag: 'free',
                 arrows: true,
                 gap: "2rem",
                 pagination: true,
-
+                breakpoints: {
+                    640: {
+                        perPage: 1,
+                    },
+                }
             }}>
                 {veggie.map((recipe) => {
                     return (
 
                         <SplideSlide key={recipe.id}>
+
                             <Card>
                                 <Link
                                     style={{textDecoration:'none'}}

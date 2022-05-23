@@ -3,22 +3,32 @@ import styled from "styled-components";
 import {motion} from "framer-motion";
 import {Link, useParams} from "react-router-dom";
 import LazyLoad from 'react-lazyload';
-import loading from '../../asets/img/giphy.gif'
 
 const Cuisine = () => {
 
 
     const [cuisine, setCuisine] = useState([])
-
     let params = useParams()
-    const getCuisine = async (name) => {
-        const data = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${process.env.REACT_APP_API_KEY}&cuisine=${name}`)
-        const recipes = await data.json()
-        setCuisine(recipes.results)
-    }
+    debugger
+    const getCuisineLocal = async (name) => {
 
+        const check = localStorage.getItem(name);
+        if (check) {
+            let func = () => {
+                setCuisine(JSON.parse(check))
+            }
+            setTimeout(func, 0)
+        } else {
+            const api = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${process.env.REACT_APP_API_KEY}&cuisine=${name}`);
+            const data = await api.json();
+            localStorage.setItem(name, JSON.stringify(data.results));
+            debugger
+            setCuisine(data.results);
+        }
+
+    }
     useEffect(() => {
-        getCuisine(params.type)
+        getCuisineLocal(params.type)
 
     }, [params.type])
 
@@ -31,10 +41,10 @@ const Cuisine = () => {
         {cuisine.map((item) => {
             return (
                 <Link
-                    style={{textDecoration:'none'}}
+                    style={{textDecoration: 'none'}}
                     to={'/recipe/' + item.id}>
                     <Card key={item.id}>
-                        <LazyLoad height={200}>
+                        <LazyLoad height={100}>
                             <img src={item.image} alt=""/>
                         </LazyLoad>
 
@@ -45,6 +55,7 @@ const Cuisine = () => {
             )
         })}
     </Grid>
+
 
 };
 
@@ -57,9 +68,14 @@ const Grid = styled(motion.div)`
 
 const Card = styled.div`
   img {
+    min-height: 250px;
     width: 100%;
     border-radius: 2rem;
 
+  }
+
+  .imageLd {
+    height: 100%;
   }
 
   a {
@@ -72,6 +88,10 @@ const Card = styled.div`
   }
 
 `
-
+const Loader = styled.img`
+  transition: 1s;
+  display: block;
+  margin: 0 auto;
+`
 
 export default Cuisine;

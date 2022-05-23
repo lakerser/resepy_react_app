@@ -22,9 +22,9 @@ const Category = () => {
                 <h4>Thai</h4>
             </Slunk>
 
-            <Slunk to={'/cuisine/Japanese'}>
+            <Slunk to={'/cuisine/Korean'}>
                 <GiChopsticks/>
-                <h4>Japanese</h4>
+                <h4>Korean</h4>
             </Slunk>
 
         </List>
@@ -34,15 +34,16 @@ const Category = () => {
 const List = styled.div`
 display: flex;
   justify-content: center;
-  margin: 2rem 0;
+  margin: 20px auto;
+  
 `
 const Slunk = styled(NavLink)`
 display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 0 8px;
   border-radius:  50px ;
-  margin-right: 2rem;
   text-decoration: none;
   background: linear-gradient(35deg,#494949,#313131);
   width: 5rem ;

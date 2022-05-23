@@ -14,7 +14,9 @@ const Home = () => {
 
             <Veggie/>
             <Popular/>
+
         </motion.div>
+
     );
 };
 
