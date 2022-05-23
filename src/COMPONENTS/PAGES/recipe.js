@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import styled from "styled-components";
-
+import loading from'../../asets/img/giphy.gif'
 const Recipe = () => {
 
     let params = useParams()
     const [details, setDetails] = useState({})
-    const [activeTab,setActiveTab] = useState('instructions')
+    const [activeTab, setActiveTab] = useState('instructions')
     const fetchDetails = async () => {
         const data = await fetch(`https://api.spoonacular.com/recipes/${params.name}/information?apiKey=${process.env.REACT_APP_API_KEY}`)
         const detailData = await data.json()
@@ -16,36 +16,47 @@ const Recipe = () => {
     useEffect(() => {
         fetchDetails()
     }, [params.name])
-
+    console.log(details)
     return (
         <DetailWrapper>
 
             <div>
                 <h2>{details.title}</h2>
-                <img src={details.image} alt=""/>
+                {
+                    details.image?<img src={details.image} alt=""/>:<img src={loading} alt=""/>
+                }
+
             </div>
 
             <Info>
-                <Button className={activeTab ==='instructions' ? 'active' : ""} onClick={()=>{setActiveTab(`instructions`)}}>Instructions</Button>
-                <Button className={activeTab ==='ingredients' ? 'active' : ""} onClick={()=>{setActiveTab(`ingredients`)}} >Ingredients</Button>
+                <Button className={activeTab === 'instructions' ? 'active' : ""} onClick={() => {
+                    setActiveTab(`instructions`)
+                }}>Instructions</Button>
+                <Button className={activeTab === 'ingredients' ? 'active' : ""} onClick={() => {
+                    setActiveTab(`ingredients`)
+                }}>Ingredients</Button>
                 {activeTab === 'instructions'
-                    ? <div>
+                    ? <div className={'text'}>
+                        <h2>About recipe</h2>
                         <h3 dangerouslySetInnerHTML={{__html: details.summary}}></h3>
+                        <h2>How to make</h2>
                         <h3 dangerouslySetInnerHTML={{__html: details.instructions}}></h3>
 
                     </div>
-                    : <ul>
-                        {details.extendedIngredients.map(ingredient => {
-                            return (
-                                <li key={ingredient.id}>
-                                    {ingredient.original}
-                                </li>
-                            )
-                        })}
-                    </ul>
+                    : <div className='ingredients'>
+                        <h2>Ingredients</h2>
+                        <ul>
+                            {details.extendedIngredients.map(ingredient => {
+                                return (
+                                    <li key={ingredient.id}>
+                                        {ingredient.original}
+                                    </li>
+                                )
+                            })}
+                        </ul>
+                    </div>
                 }
             </Info>
-
 
 
         </DetailWrapper>
@@ -55,6 +66,15 @@ const DetailWrapper = styled.div`
   margin-top: 10rem;
   margin-bottom: 5rem;
   display: flex;
+  @media (max-width: 768px) {
+    margin-top: 2rem;
+    flex-wrap: wrap;
+    img {
+      width: 100%;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+  }
 
   .active {
     background: #000;
@@ -81,12 +101,31 @@ const Button = styled.button`
   color: #313131;
   background: white;
   border: 2px solid black;
-  margin-right: 2rem;
   font-weight: 600;
+  min-width: 100px;
+
 
 `
 const Info = styled.div`
-  margin-left: 10rem
+  margin-left: 10rem;
+  @media (max-width: 768px) {
+    .ingredients{
+      margin-top: 2rem;
+    }
+    margin-left: 0;
+    display: flex;
+    flex-direction: column;
+    .text {
+      margin-top: 2rem;
+
+      h3 {
+        font-size: 16px;
+        line-height: 22px;
+
+      }
+    }
+
+  }
 `
 
 export default Recipe;

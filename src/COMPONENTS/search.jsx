@@ -18,6 +18,8 @@ const Search = () => {
                 <div>
                     <FaSearch/>
                     <input
+
+                        placeholder='Search'
                         onChange={(event) => setInput(event.target.value)}
                         value={input} type="text"/>
                 </div>
@@ -27,14 +29,18 @@ const Search = () => {
     );
 };
 const FormStyle = styled.form`
-  margin: 0 20rem;
+ 
+  
 
   div {
     position: relative;
+    min-width: 200px;
+    max-width: 40%;
+    margin: 0 auto;
     width: 100%;
-
+    
   }
-
+ 
   input {
     border: none;
     background: linear-gradient(35deg, #494949, #313131);

@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import {Splide, SplideSlide} from "@splidejs/react-splide";
 import '@splidejs/react-splide/css';
 import {Link} from "react-router-dom";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 
 const Popular = () => {
@@ -31,10 +32,10 @@ const Popular = () => {
         <Wrapper>
             <h3>Popular Picks</h3>
             <Splide options={{
-                perPage: 4,
+                perPage: 2,
                 drag: 'free',
                 arrows: false,
-                gap: "5rem",
+                gap: "2rem",
                 pagination: false
             }}>
                 {popular.map((recipe) => {
@@ -43,7 +44,11 @@ const Popular = () => {
                             <Card>
                                 <Link to={'/recipe/'+recipe.id}>
                                     <p>{recipe.title}</p>
-                                    <img src={recipe.image} alt="image"/>
+                                    <LazyLoadImage
+                                        effect='blur'
+                                        src={recipe.image} alt="image"
+                                    />
+                                    {/*<img loading='lazy' src={recipe.image} alt="image"/>*/}
                                     <Gradient/>
                                 </Link>
                             </Card>

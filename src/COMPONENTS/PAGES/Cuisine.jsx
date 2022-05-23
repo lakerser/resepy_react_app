@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import styled from "styled-components";
 import {motion} from "framer-motion";
 import {Link, useParams} from "react-router-dom";
+import LazyLoad from 'react-lazyload';
+import loading from '../../asets/img/giphy.gif'
 
 const Cuisine = () => {
 
@@ -12,13 +14,12 @@ const Cuisine = () => {
     const getCuisine = async (name) => {
         const data = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${process.env.REACT_APP_API_KEY}&cuisine=${name}`)
         const recipes = await data.json()
-        debugger
         setCuisine(recipes.results)
     }
 
     useEffect(() => {
         getCuisine(params.type)
-        debugger
+
     }, [params.type])
 
     return <Grid
@@ -33,9 +34,13 @@ const Cuisine = () => {
                     style={{textDecoration:'none'}}
                     to={'/recipe/' + item.id}>
                     <Card key={item.id}>
-                        <img src={item.image} alt=""/>
+                        <LazyLoad height={200}>
+                            <img src={item.image} alt=""/>
+                        </LazyLoad>
+
                         <h4>{item.title}</h4>
                     </Card>
+
                 </Link>
             )
         })}
@@ -47,7 +52,6 @@ const Grid = styled(motion.div)`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
   grid-gap: 3rem;
-
 
 `
 
@@ -68,5 +72,6 @@ const Card = styled.div`
   }
 
 `
+
 
 export default Cuisine;

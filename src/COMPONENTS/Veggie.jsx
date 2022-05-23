@@ -3,6 +3,7 @@ import {Splide, SplideSlide} from "@splidejs/react-splide";
 import styled from "styled-components";
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 
 const Veggie = () => {
@@ -33,11 +34,12 @@ const Veggie = () => {
         <Wrapper>
             <h3>Our Vegetarian Picks</h3>
             <Splide options={{
-                perPage: 3,
+                perPage: 2,
                 drag: 'free',
-                arrows: false,
-                gap: "5rem",
-                pagination: false
+                arrows: true,
+                gap: "2rem",
+                pagination: true,
+
             }}>
                 {veggie.map((recipe) => {
                     return (
@@ -48,7 +50,10 @@ const Veggie = () => {
                                     style={{textDecoration:'none'}}
                                     to={'/recipe/'+recipe.id}>
                                     <p>{recipe.title}</p>
-                                    <img src={recipe.image} alt="image"/>
+                                    <LazyLoadImage
+                                         effect='blur'
+                                         src={recipe.image} alt="image"
+                                    />
                                     <Gradient/>
                                 </Link>
                             </Card>
@@ -68,7 +73,6 @@ const Card = styled.div`
   border-radius: 2rem;
   overflow: hidden;
   position: relative;
-
   img {
     border-radius: 2rem;
     position: absolute;
@@ -82,7 +86,7 @@ const Card = styled.div`
     position: absolute;
     z-index: 10;
     left: 50%;
-    bottom: 0%;
+    bottom: 0;
     transform: translate(-50%, 0%);
     color: white;
     width: 100%;

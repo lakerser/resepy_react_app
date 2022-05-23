@@ -41,17 +41,17 @@ display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-radius:  50% ;
+  border-radius:  50px ;
   margin-right: 2rem;
   text-decoration: none;
   background: linear-gradient(35deg,#494949,#313131);
-  width: 6rem ;
-  height: 6rem ;
+  width: 5rem ;
+  height: 5rem ;
   cursor: pointer;
   color: white;
   h4{
     color: white;
-    font-size: 0.8rem;
+    font-size: 0.6rem;
     font-weight: bold;
   }
   svg{
